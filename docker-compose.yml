@@ -1,0 +1,68 @@
+services:
+  frontend:
+    build: ./Frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - api-gateway
+
+  api-gateway:
+    build: ./api-gateway
+    ports:
+      - "8080:80"
+    depends_on:
+      - auth
+      - music
+      - notification
+    restart: always
+
+  auth:
+    build: ./auth
+    expose:
+      - "3000"
+    env_file:
+      - ./auth/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: always
+
+  music:
+    build: ./music
+    expose:
+      - "3002"
+    env_file:
+      - ./music/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    restart: always
+
+  notification:
+    build: ./notification
+    expose:
+      - "3001"
+    env_file:
+      - ./notification/.env
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    restart: always
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"

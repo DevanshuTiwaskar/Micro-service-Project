@@ -1,0 +1,739 @@
+{
+  "name": "music player",
+  "path": "c:\\Users\\Asus\\Desktop\\korder\\music player",
+  "type": "directory",
+  "children": [
+    {
+      "name": "Frontend",
+      "type": "folder",
+      "icon": "📁",
+      "children": [
+        {
+          "name": "public",
+          "type": "folder",
+          "icon": "📁",
+          "children": [
+            {
+              "name": "vite.svg",
+              "type": "file",
+              "icon": "🖼️"
+            }
+          ]
+        },
+        {
+          "name": "src",
+          "type": "folder",
+          "icon": "📁",
+          "children": [
+            {
+              "name": "api",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "axiosAuth.js",
+                  "type": "file",
+                  "icon": "📜"
+                },
+                {
+                  "name": "axiosMusic.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "components",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "AppLayout.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "CreatePlaylistModal.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "MainLayout.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "MobileSidebar.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "Navbar.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "Player.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "PlaylistCard.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "ProtectedRoute.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "Sidebar.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "SidebarContent.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "SongCard.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                }
+              ]
+            },
+            {
+              "name": "context",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "AuthContext.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "PlayerContext.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                }
+              ]
+            },
+            {
+              "name": "pages",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "ArtistDashboard.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "Dashboard.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "ForgotPassword.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "GoogleCallback.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "Landing.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "Library.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "Login.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "PlaylistPage.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "Playlists.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "Register.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                },
+                {
+                  "name": "ResetPassword.jsx",
+                  "type": "file",
+                  "icon": "⚛️"
+                }
+              ]
+            },
+            {
+              "name": "store",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "useModalStore.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "App.jsx",
+              "type": "file",
+              "icon": "⚛️"
+            },
+            {
+              "name": "index.css",
+              "type": "file",
+              "icon": "🎨"
+            },
+            {
+              "name": "main.jsx",
+              "type": "file",
+              "icon": "⚛️"
+            }
+          ]
+        },
+        {
+          "name": ".gitignore",
+          "type": "file",
+          "icon": "📁"
+        },
+        {
+          "name": "IMG-20251205-WA0012.jpg",
+          "type": "file",
+          "icon": "🖼️"
+        },
+        {
+          "name": "README.md",
+          "type": "file",
+          "icon": "📝"
+        },
+        {
+          "name": "eslint.config.js",
+          "type": "file",
+          "icon": "📜"
+        },
+        {
+          "name": "index.html",
+          "type": "file",
+          "icon": "🌐"
+        },
+        {
+          "name": "package-lock.json",
+          "type": "file",
+          "icon": "⚙️"
+        },
+        {
+          "name": "package.json",
+          "type": "file",
+          "icon": "📦"
+        },
+        {
+          "name": "vite.config.js",
+          "type": "file",
+          "icon": "📜"
+        }
+      ]
+    },
+    {
+      "name": "api-gateway",
+      "type": "folder",
+      "icon": "📁",
+      "children": [
+        {
+          "name": "Dockerfile",
+          "type": "file",
+          "icon": "🐳"
+        },
+        {
+          "name": "nginx.conf",
+          "type": "file",
+          "icon": "📄"
+        }
+      ]
+    },
+    {
+      "name": "auth",
+      "type": "folder",
+      "icon": "📁",
+      "children": [
+        {
+          "name": "src",
+          "type": "folder",
+          "icon": "📁",
+          "children": [
+            {
+              "name": "broker",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "rabbit.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "config",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "config.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "controllers",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "auth.controller.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "db",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "db.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "middlewares",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "auth.middleware.js",
+                  "type": "file",
+                  "icon": "📜"
+                },
+                {
+                  "name": "validation.middleware.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "models",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "otp.model.js",
+                  "type": "file",
+                  "icon": "📜"
+                },
+                {
+                  "name": "user.model.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "routers",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "auth.routes.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "app.js",
+              "type": "file",
+              "icon": "📜"
+            }
+          ]
+        },
+        {
+          "name": ".dockerignore",
+          "type": "file",
+          "icon": "🐳"
+        },
+        {
+          "name": ".gitignore",
+          "type": "file",
+          "icon": "📁"
+        },
+        {
+          "name": "Dockerfile",
+          "type": "file",
+          "icon": "🐳"
+        },
+        {
+          "name": "docker-compose.yml",
+          "type": "file",
+          "icon": "⚙️"
+        },
+        {
+          "name": "package-lock.json",
+          "type": "file",
+          "icon": "⚙️"
+        },
+        {
+          "name": "package.json",
+          "type": "file",
+          "icon": "📦"
+        },
+        {
+          "name": "server.js",
+          "type": "file",
+          "icon": "📜"
+        }
+      ]
+    },
+    {
+      "name": "music",
+      "type": "folder",
+      "icon": "📁",
+      "children": [
+        {
+          "name": "src",
+          "type": "folder",
+          "icon": "📁",
+          "children": [
+            {
+              "name": "broker",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "MusicSubscriber.js",
+                  "type": "file",
+                  "icon": "📜"
+                },
+                {
+                  "name": "rabbit.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "config",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "config.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "controller",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "musicController.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "db",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "db.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "middlewares",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "auth.middleware.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "models",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "music.model.js",
+                  "type": "file",
+                  "icon": "📜"
+                },
+                {
+                  "name": "playlist.model.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "router",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "music.routes.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "services",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "musicLibraryService.js",
+                  "type": "file",
+                  "icon": "📜"
+                },
+                {
+                  "name": "storage.service.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "app.js",
+              "type": "file",
+              "icon": "📜"
+            }
+          ]
+        },
+        {
+          "name": ".dockerignore",
+          "type": "file",
+          "icon": "🐳"
+        },
+        {
+          "name": ".gitignore",
+          "type": "file",
+          "icon": "📁"
+        },
+        {
+          "name": "Dockerfile",
+          "type": "file",
+          "icon": "🐳"
+        },
+        {
+          "name": "docker-compose.yml",
+          "type": "file",
+          "icon": "⚙️"
+        },
+        {
+          "name": "invite.ics",
+          "type": "file",
+          "icon": "📄"
+        },
+        {
+          "name": "package-lock.json",
+          "type": "file",
+          "icon": "⚙️"
+        },
+        {
+          "name": "package.json",
+          "type": "file",
+          "icon": "📦"
+        },
+        {
+          "name": "server.js",
+          "type": "file",
+          "icon": "📜"
+        }
+      ]
+    },
+    {
+      "name": "notification",
+      "type": "folder",
+      "icon": "📁",
+      "children": [
+        {
+          "name": "src",
+          "type": "folder",
+          "icon": "📁",
+          "children": [
+            {
+              "name": "broker",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "Rabbit.js",
+                  "type": "file",
+                  "icon": "📜"
+                },
+                {
+                  "name": "listner.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "config",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "config.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "controllers",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "notification.controller.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "routers",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "notification.routes.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "utils",
+              "type": "folder",
+              "icon": "📁",
+              "children": [
+                {
+                  "name": "email.js",
+                  "type": "file",
+                  "icon": "📜"
+                }
+              ]
+            },
+            {
+              "name": "app.js",
+              "type": "file",
+              "icon": "📜"
+            }
+          ]
+        },
+        {
+          "name": ".dockerignore",
+          "type": "file",
+          "icon": "🐳"
+        },
+        {
+          "name": ".gitignore",
+          "type": "file",
+          "icon": "📁"
+        },
+        {
+          "name": "Dockerfile",
+          "type": "file",
+          "icon": "🐳"
+        },
+        {
+          "name": "docker-compose.yml",
+          "type": "file",
+          "icon": "⚙️"
+        },
+        {
+          "name": "package-lock.json",
+          "type": "file",
+          "icon": "⚙️"
+        },
+        {
+          "name": "package.json",
+          "type": "file",
+          "icon": "📦"
+        },
+        {
+          "name": "server.js",
+          "type": "file",
+          "icon": "📜"
+        }
+      ]
+    },
+    {
+      "name": "README2.md",
+      "type": "file",
+      "icon": "📝"
+    },
+    {
+      "name": "comm.md",
+      "type": "file",
+      "icon": "📝"
+    },
+    {
+      "name": "docker-compose.yml",
+      "type": "file",
+      "icon": "⚙️"
+    },
+    {
+      "name": "readMeRabbitMQ.md",
+      "type": "file",
+      "icon": "📝"
+    }
+  ],
+  "metadata": {
+    "generated": "2026-02-02T08:14:13.041Z",
+    "generator": "FileTree Pro Extension",
+    "version": "0.2.0",
+    "showIcons": true,
+    "maxDepth": 10
+  }
+}
