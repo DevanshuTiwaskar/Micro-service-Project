@@ -20,6 +20,8 @@ __pycache__/
 .env.production.local
 *.env
 k8s/env/
+k8s/notification-secret.yaml
+api-gateway/frontend-dist/
 
 # IDE & System
 .vscode/
