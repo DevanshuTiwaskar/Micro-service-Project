@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+@theme {
+  --color-accent-primary: #2EE07A;
+  --color-accent-secondary: #4B6FF5;
+  --color-accent-tertiary: #9b59ff;
+  
+  --color-dark-100: #020202;
+  --color-dark-200: #050505;
+  --color-dark-300: #0a0a0c;
+  
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+}
+
+/* ======================================================
+   Aura — Futuristic "Deep Space" UI System
+   ====================================================== */
+
+:root {
+  --primary: #2EE07A;
+  --secondary: #4B6FF5;
+  --glass-100: rgba(255, 255, 255, 0.02);
+  --glass-200: rgba(255, 255, 255, 0.04);
+  --glass-300: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.06);
+  --glass-border-strong: rgba(255, 255, 255, 0.12);
+  --blur-md: 12px;
+  --blur-lg: 24px;
+  --accent-gradient: linear-gradient(135deg, #2EE07A, #4B6FF5, #9b59ff);
+}
+
+body {
+  background-color: #020202;
+  background-image: 
+    radial-gradient(circle at 0% 0%, rgba(46, 224, 122, 0.05) 0%, transparent 40%),
+    radial-gradient(circle at 100% 100%, rgba(75, 111, 245, 0.05) 0%, transparent 40%);
+  color: #ffffff;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.12); }
+
+/* Core Glass System */
+.glass {
+  background: var(--glass-100);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-heavy {
+  background: var(--glass-200);
+  backdrop-filter: blur(var(--blur-lg));
+  -webkit-backdrop-filter: blur(var(--blur-lg));
+  border: 1px solid var(--glass-border-strong);
+}
+
+.glass-hover:hover {
+  background: var(--glass-200);
+  border-color: var(--glass-border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+/* Aura Visual Specialties */
+.aura-nebula {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle at center, #4B6FF5, transparent 60%);
+  filter: blur(80px);
+  z-index: -1;
+}
+
+.aura-glow { text-shadow: 0 0 10px rgba(46, 224, 122, 0.4); }
+.aura-glow-blue { text-shadow: 0 0 10px rgba(75, 111, 245, 0.4); }
+.track-gradient { background: linear-gradient(90deg, #2EE07A, #4B6FF5); }
+.text-gradient {
+  background: linear-gradient(135deg, #2EE07A, #4B6FF5, #9b59ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Layout & Depth */
+.container-main {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+.player-glow { box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(75, 111, 245, 0.05); }
+.card-depth { perspective: 1000px; }
+.card-inner {
+  transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+}
+
+/* Buttons (No @apply) */
+.btn-aura {
+  position: relative;
+  overflow: hidden;
+  padding: 0.625rem 1.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--accent-gradient);
+  color: #000;
+  box-shadow: 0 4px 15px rgba(46, 224, 122, 0.2);
+}
+.btn-aura:hover {
+  box-shadow: 0 6px 20px rgba(46, 224, 122, 0.4);
+  filter: brightness(1.05);
+}
+.btn-aura:active { transform: scale(0.95); }
+
+.btn-glass {
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  background: var(--glass-100);
+  backdrop-filter: blur(var(--blur-md));
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all 0.2s;
+}
+.btn-glass:hover { background: rgba(255, 255, 255, 0.1); }
+
+/* Inputs */
+input.aura-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  outline: none;
+  transition: all 0.2s;
+}
+input.aura-input:focus {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(75, 111, 245, 0.5);
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
