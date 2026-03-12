@@ -32,7 +32,7 @@ app.use(
 );
 
 app.use(cors({
-  origin: "http://localhost:5173",  // your React app URL
+  origin: config.FRONTEND_URL || "http://localhost:5173",  // your React app URL
   credentials: true,                // if using cookies or auth headers
 }));
 // Configure Passport to use Google OAuth 2.0 strategy

@@ -324,3 +324,13 @@ minikube service frontend --url
 
 # Get the public URL of api-gateway service again (after restart/update)
 minikube service api-gateway --url
+
+
+
+
+
+
+
+
+
+https://aura-music-v56h.onrender.com
