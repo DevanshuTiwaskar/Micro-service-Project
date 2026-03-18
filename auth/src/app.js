@@ -31,9 +31,15 @@ app.use(
   })
 );
 
+const allowedOrigins = [
+  config.FRONTEND_URL,
+  "https://aura-frontend-omq4.onrender.com",
+  "http://localhost:5173",
+].filter(Boolean);
+
 app.use(cors({
-  origin: config.FRONTEND_URL || "http://localhost:5173",  // your React app URL
-  credentials: true,                // if using cookies or auth headers
+  origin: allowedOrigins,
+  credentials: true,
 }));
 // Configure Passport to use Google OAuth 2.0 strategy
 passport.use(new GoogleStrategy({

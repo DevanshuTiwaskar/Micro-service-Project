@@ -10,9 +10,15 @@ app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.use(cookieParser());
 
+const allowedOrigins = [
+  process.env.FRONTEND_URL,
+  "https://aura-frontend-omq4.onrender.com",
+  "http://localhost:5173",
+].filter(Boolean);
+
 app.use(cors({
-  origin: process.env.FRONTEND_URL || "http://localhost:5173",  // your React app URL or production URL
-  credentials: true,                // if using cookies or auth headers
+  origin: allowedOrigins,
+  credentials: true,
 }));
 
 app.use('/api/music', musicRoutes);
