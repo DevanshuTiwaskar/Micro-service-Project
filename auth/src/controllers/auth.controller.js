@@ -84,7 +84,7 @@ export const register = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: isProduction ? "Strict" : "Lax",
+      sameSite: isProduction ? "None" : "Lax",
       maxAge: 2 * 24 * 60 * 60 * 1000,
     });
 
@@ -191,7 +191,7 @@ export const login = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: isProduction ? "Strict" : "Lax",
+      sameSite: isProduction ? "None" : "Lax",
       maxAge: 2 * 24 * 60 * 60 * 1000,
     });
 
@@ -276,7 +276,7 @@ export const googleAuthCallback = async (req, res) => {
     res.cookie("token", token, {
       httpOnly: true,
       secure: isProduction,
-      sameSite: isProduction ? "Strict" : "Lax",
+      sameSite: isProduction ? "None" : "Lax",
       maxAge: 2 * 24 * 60 * 60 * 1000,
     });
 
@@ -385,7 +385,12 @@ export const logoutUser = async (req, res) => {
     const expiresAt = decoded.exp - Math.floor(Date.now() / 1000);
 
     await redis.set(`bl_${token}`, token, "EX", expiresAt);
-    res.clearCookie("token");
+    const isProduction = process.env.NODE_ENV === "production";
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? "None" : "Lax",
+    });
 
     res.status(200).json({ message: "Logged out successfully" });
   } catch (err) {
