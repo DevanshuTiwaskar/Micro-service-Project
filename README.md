@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./docs/logo-placeholder.png" alt="Aura Music Player Logo" width="150" height="auto" />
+  <img src="./Frontend/public/favicon.svg" alt="Aura Music Player Logo" width="150" height="auto" />
   <h1>🎵 Aura Music Player</h1>
   <p><em>A highly scalable, event-driven Microservices Music Player Web Application.</em></p>
 
