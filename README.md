@@ -3,11 +3,15 @@
   <h1>🎵 Aura Music Player</h1>
   <p><em>A highly scalable, event-driven Microservices Music Player Web Application.</em></p>
 
-  [![React](https://img.shields.io/badge/React-19-blue.svg)](https://reactjs.org/)
-  [![Node.js](https://img.shields.io/badge/Node.js-Backend-green.svg)](https://nodejs.org/)
-  [![RabbitMQ](https://img.shields.io/badge/RabbitMQ-Event_Driven-orange.svg)](https://www.rabbitmq.com/)
-  [![Docker](https://img.shields.io/badge/Docker-Containerized-blue.svg)](https://www.docker.com/)
-  [![Kubernetes](https://img.shields.io/badge/Kubernetes-Orchestrated-blue.svg)](https://kubernetes.io/)
+  <!-- Badges -->
+  <p>
+    <a href="https://react.dev/"><img src="https://img.shields.io/badge/React-19-00d8ff.svg?logo=react&logoColor=white" alt="React 19" /></a>
+    <a href="https://nodejs.org/"><img src="https://img.shields.io/badge/Node.js-Backend-339933.svg?logo=nodedotjs&logoColor=white" alt="Node.js" /></a>
+    <a href="https://www.rabbitmq.com/"><img src="https://img.shields.io/badge/RabbitMQ-Event%20Driven-ff6600.svg?logo=rabbitmq&logoColor=white" alt="RabbitMQ" /></a>
+    <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/Docker-Containerized-2496ed.svg?logo=docker&logoColor=white" alt="Docker" /></a>
+    <a href="https://kubernetes.io/"><img src="https://img.shields.io/badge/Kubernetes-Orchestrated-326ce5.svg?logo=kubernetes&logoColor=white" alt="Kubernetes" /></a>
+    <a href="https://tailwindcss.com/"><img src="https://img.shields.io/badge/Tailwind-CSS%20V4-06B6D4.svg?logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4" /></a>
+  </p>
 </div>
 
 ---
@@ -24,28 +28,30 @@
 9. [🚀 Setup & Installation Guide](#-setup--installation-guide)
 10. [☸️ Kubernetes & DevOps](#️-kubernetes--devops)
 11. [📊 Performance & Scalability](#-performance--scalability)
-12. [🧪 Testing Strategy](#-testing-strategy)
-13. [🔥 Future Improvements](#-future-improvements)
+12. [🔥 Future Improvements](#-future-improvements)
 
 ---
 
 ## 🌟 System Design Overview
-Aura Music Player is engineered to production standards using a **Microservices Architecture**. By separating concerns into highly cohesive boundary contexts (Auth, Music, Notification), the application achieves fault isolation, decoupled deployments, and horizontal scalability. Standardized communication is enforced via RESTful APIs mapped through an **Nginx API Gateway**, while asynchronous events are reliably distributed using **RabbitMQ**.
 
-> **💡 Why this project stands out:** It bridges the gap between a standard CRUD app and a scalable enterprise solution by implementing distributed messaging, robust in-memory caching (Redis), secure stateless authentication, and Kubernetes-ready containerization.
+**Aura Music Player** is engineered to production standards using a modern **Microservices Architecture**. By separating concerns into highly cohesive boundary contexts (Auth, Music, Notification), the application achieves fault isolation, independent deployments, and horizontal scalability. 
+
+Standardized communication is enforced via RESTful APIs mapped through an **Nginx API Gateway**, while asynchronous background tasks and events are reliably distributed using **RabbitMQ**.
+
+> **💡 Why this project stands out:** It bridges the gap between a standard CRUD application and a scalable enterprise solution by implementing distributed messaging, robust in-memory caching (Redis), secure stateless authentication, and Kubernetes-ready containerization.
 
 ---
 
 ## 🏗️ Architecture Breakdown
 
 ### Logical System Architecture
-The application runs across four core isolated layers:
-1. **Frontend Layer:** React SPA with Vite and Zustand for state management.
-2. **API Gateway:** Nginx reverse proxy routing `/api/auth`, `/api/music`, and `/api/notification` to their respective microservices.
+The application is structured across four core isolated layers:
+1. **Frontend Layer:** React SPA utilizing Vite for fast builds and Zustand for lean state management.
+2. **API Gateway:** Nginx reverse proxy routing traffic (`/api/auth`, `/api/music`, `/api/notification`) to their respective underlying microservices.
 3. **Application Services:** 
-   - `auth-service`: Manages users, JWTs, OAuth2, and emits user lifecycle events.
-   - `music-service`: Handles tracks, libraries, AWS S3 MP3 storage integrations.
-   - `notification-service`: Consumes RMQ events to orchestrate transactional emails.
+   - 🔐 `auth-service`: Manages user identities, stateless JWT sessions, OAuth2 flows, and emits user lifecycle events.
+   - 🎵 `music-service`: Handles tracks, libraries, playlists, and secure AWS S3 integrations for MP3 storage.
+   - 📧 `notification-service`: Consumes RMQ events to reliably orchestrate transactional emails (e.g., Welcome Emails, Password Resets).
 4. **Data & Messaging Layer:** MongoDB (Persistence), Redis (Caching/Sessions), RabbitMQ (Message Broker).
 
 ### Visual Layout
@@ -62,130 +68,144 @@ graph TD
     Auth_Service -.->|Publishes Event| RMQ((RabbitMQ))
     
     Music_Service -->|Metadata| MongoMusic[(MongoDB: Music)]
-    Music_Service -->|Audio Files| S3[☁️ AWS S3 S3]
+    Music_Service -->|Audio Files| S3[☁️ AWS S3]
     
     RMQ -.->|Consumes Event| Notification_Service
     Notification_Service -->|Emails| SMTP[📤 SMTP / Nodemailer]
 ```
 
 ### Request Lifecycle Example (Registration Flow)
-1. **Client** POSTs to `/api/auth/register`.
-2. **API Gateway** proxies request to the **Auth Service**.
-3. **Auth Service** validates request, hashes password, saves to **MongoDB**, and generates JWT.
-4. **Auth Service** publishes `AUTHENTICATION_NOTIFICATION_USER.REGISTERED` to **RabbitMQ**.
-5. **Notification Service** asynchronously pulls the event from the RMQ queue and sends a Welcome Email via **Nodemailer**.
-6. Client instantly receives a `201 Created` response without waiting for the email to send.
+1. **Client** POSTs registration details to `/api/auth/register`.
+2. **API Gateway** intercepts and proxies the request to the **Auth Service**.
+3. **Auth Service** validates the payload, hashes the password via `bcrypt`, saves the record to **MongoDB**, and generates a secure JWT.
+4. **Auth Service** publishes a `USER.REGISTERED` event to **RabbitMQ**.
+5. **Notification Service** asynchronously pulls the event from the queue and sends a Welcome Email via **Nodemailer**.
+6. **Client** instantly receives a `201 Created` response without waiting for the email transmission to complete.
 
 ---
 
 ## ✨ Features & Benefits
-- **Role-Based Access Control (RBAC):** Distinct `Listener` and `Artist` boundaries. Only artists can push content to AWS S3.
-- **Asynchronous Workflows:** Heavy networking tasks like email are offloaded to background queues, keeping UI response times under <100ms.
-- **Resilient Authentication:** Seamless mix of standard JWT and Google OAuth2, augmented by Redis for lightning-fast token validation.
-- **Highly Responsive UI:** Driven by modern tooling (`Framer Motion`, `Tailwind CSS V4`), providing smooth transitions and mobile-first responsibilities.
+
+- **🛡️ Role-Based Access Control (RBAC):** Distinct `Listener` and `Artist` boundaries. Only authenticated artists can upload heavy media content to AWS S3.
+- **⚡ Asynchronous Workflows:** Heavy networking tasks like email transmission are offloaded to background queues, keeping the main thread clear and API response times under 100ms.
+- **🔐 Resilient Authentication:** A seamless mix of HttpOnly JWT cookies and Google OAuth2, augmented by Redis for lightning-fast token validation and session invalidation.
+- **🎨 Highly Responsive UI:** Driven by modern tooling (`Tailwind CSS v4`, `Framer Motion`), providing hardware-accelerated smooth transitions and flexible mobile-first layouts.
 
 ---
 
 ## 📸 UI & Feature Experience
 
 ### 1. Landing & Authentication
-*Secure onboarding with JWT & Google OAuth.*
+*Secure, fast onboarding with standard credentials or Google OAuth.*
 ![Landing Page](./docs/landing-page-placeholder.png) 
 * **User Flow:** Guest visits Landing -> Google Auth or standard login -> Redirected to User Dashboard.
 * **Benefits:** Frictionless onboarding keeps conversion rates high.
 
 ### 2. General Dashboard & Library
-*Browse, search, and manage localized user playlists.*
+*Browse, search, and manage localized user playlists seamlessly.*
 ![Dashboard](./docs/dashboard-placeholder.png)
-* **User Flow:** Fetch personalized feed -> Like tracks -> System builds dynamic `/playlist`.
+* **User Flow:** Fetch personalized feed -> Like tracks -> System dynamically builds user's `/playlist`.
 * **APIs Connected:** `GET /api/music/get`, `GET /api/music/playlist/get`
 
 ### 3. Artist Upload Portal
-*Secure uploads directly linking metadata to cloud blob storage.*
+*Secure uploads directly linking track metadata to cloud blob storage.*
 ![Artist Dashboard](./docs/artist-dashboard-placeholder.png)
-* **User Flow:** Artist logs in -> Uploads MP3 & Cover Photo -> Multer buffer streams securely to AWS S3.
+* **User Flow:** Artist logs in -> Uploads MP3 & Cover Photo -> Multer buffer streams securely to AWS S3 bucket.
 * **Tech:** `multer`, `@aws-sdk/client-s3`.
 
-> 🎬 **Quick Demo (GIF Prototype):**
-> *Imagine a 10s GIF here showing: Login -> Browsing music -> Skipping track -> Quick Playlist Add.*
-> *[Place `demo.gif` in `/docs` directory]*
+> 🎬 **Demo Preview:**  
+> *Check out our application flow in the `docs/` folder!*
 
 ---
 
 ## ⚙️ Tech Stack & Tools
 
-| Category | Technologies Chosen | Why we chose it? |
-|----------|--------------------|------------------|
-| **Frontend** | React 19, Vite, Tailwind 4, Zustand | React for component-driven UI; Zustand for zero-boilerplate global state; Vite for instant HMR. |
-| **Backend** | Node.js, Express.js | Event-driven JavaScript fits perfectly with our async architecture. |
+| Component | Technologies Chosen | Rationale |
+|-----------|--------------------|-----------|
+| **Frontend** | React 19, Vite, Tailwind CSS v4, Zustand | React for component-driven UI; Zustand for zero-boilerplate global state; Vite for instant HMR. |
+| **Backend** | Node.js, Express.js | Event-driven JavaScript fits perfectly with our asynchronous architectural goals. |
 | **Databases** | MongoDB, Mongoose | Schema flexibility across microservices natively handling JSON document structures. |
-| **Caching** | Redis (ioredis) | Millisecond latency for authentication checks and transient token storage. |
-| **Messaging** | RabbitMQ (amqplib) | Industry standard AMQP protocol guarantees message delivery to Notification queues. |
-| **Cloud/File**| AWS S3 | Infinite, highly-available BLOB storage for heavy `.mp3` media. |
-| **DevOps** | Docker, Docker Compose, K8s (Minikube), Nginx | Solves "It works on my machine". Nginx handles reverse proxying correctly resolving CORS. |
+| **Caching** | Redis (ioredis) | Millisecond latency for authentication checks and transient session storage. |
+| **Messaging** | RabbitMQ (amqplib) | Industry-standard AMQP protocol guarantees resilient message delivery to queues. |
+| **Cloud/File**| AWS S3 | Infinite, highly-available BLOB storage for heavy `.mp3` media and image assets. |
+| **DevOps** | Docker, K8s (Minikube), Nginx | Solves "It works on my machine". Nginx elegantly handles reverse proxying and API routing. |
 
 ---
 
 ## 📂 Folder Structure
 ```bash
 aura-music-player/
-├── Frontend/               # React SPA Web Client
-│   ├── src/pages/          # React Views (Library, Dashboard, etc.)
-│   └── package.json        
-├── api-gateway/            # Nginx Reverse Proxy
-│   ├── nginx.conf          # Routing Rules
-│   └── Dockerfile          
-├── auth/                   # Identity & Auth Microservice
-│   ├── src/routers/        # Express Routes (/login, /register)
-│   └── package.json        
-├── music/                  # Catalog & Streaming Microservice
-│   ├── src/router/         # S3 Uploads & Playlist management
-│   └── package.json        
-├── notification/           # Background Email Microservice
-│   ├── src/routers/        # Inter-service RMQ integrations
-│   └── package.json        
-├── k8s/                    # Kubernetes Deployments & Services
-│   ├── api-gateway.yaml    
-│   ├── auth.yaml           
-│   └── ...                 
-└── docker-compose.yml      # Local dev orchestration
+├── 📁 Frontend
+│   ├── 📁 public
+│   ├── 📁 src
+│   │   ├── 📁 api
+│   │   ├── 📁 components
+│   │   ├── 📁 context
+│   │   ├── 📁 pages
+│   │   ├── 📁 store
+│   │   ├── 📄 App.jsx
+│   │   └── 🎨 index.css
+│   ├── 🐳 Dockerfile
+│   └── ⚙️ package.json
+├── 📁 api-gateway
+│   ├── 🐳 Dockerfile
+│   └── ⚙️ nginx.conf
+├── 📁 auth
+│   ├── 📁 src
+│   │   ├── 📁 broker
+│   │   ├── 📁 controllers
+│   │   ├── 📁 middlewares
+│   │   └── 📄 app.js
+│   ├── 🐳 Dockerfile
+│   └── ⚙️ package.json
+├── 📁 k8s
+│   ├── ⚙️ api-gateway.yaml
+│   ├── ⚙️ auth.yaml
+│   ├── ⚙️ frontend.yaml
+│   ├── ⚙️ music.yaml
+│   └── ⚙️ redis.yaml
+├── 📁 music
+│   ├── 📁 src
+│   │   ├── 📁 broker
+│   │   ├── 📁 services
+│   │   └── 📄 app.js
+│   ├── 🐳 Dockerfile
+│   └── ⚙️ package.json
+└── 📁 notification
+    ├── 📁 src
+    │   ├── 📁 broker
+    │   ├── 📁 utils
+    │   └── 📄 app.js
+    ├── 🐳 Dockerfile
+    └── ⚙️ package.json
 ```
 
 ---
 
 ## 🔐 Security & Authentication
 
-1. **Tokens & Sessions:** Employs stateless `JWT` stored inside HttpOnly Cookies.
-2. **Header Protection:** Bound by `helmet` to mitigate XSS and Clickjacking.
-3. **Password Security:** Salted and hashed heavily via `bcrypt`.
-4. **Endpoint Guarding:** Extracted custom `authMiddleware` and `authArtistMiddleware` for robust Authorization verifications before execution.
+1. **Tokens & Sessions:** Employs stateless `JWT` (JSON Web Tokens) securely delivered via `HttpOnly`, `Secure` Cookies.
+2. **Header Protection:** Empowered by `helmet` to mitigate common web vulnerabilities like XSS, Clickjacking, and MIME sniffing.
+3. **Password Security:** Credentials are salted and heavily hashed using `bcrypt` before database persistence.
+4. **Endpoint Guarding:** Custom `authMiddleware` and `authArtistMiddleware` enforce strict Authorization verifications before controller execution.
 
 ---
 
 ## 📡 Core API Documentation
 
-### Auth Service
+### Auth Service (`/api/auth`)
 | Method | Endpoint | Purpose | Protection Level |
 |--------|---------|---------|------------------|
-| `POST` | `/api/auth/register` | Register new user | Public |
-| `POST` | `/api/auth/login` | Authenticate and issue JWT | Public |
-| `GET` | `/api/auth/me` | Retrieve profile metadata | Secured 🔒 |
+| `POST` | `/register` | Register new user account | Public 🌍 |
+| `POST` | `/login` | Authenticate and issue JWT | Public 🌍 |
+| `GET` | `/me` | Retrieve user profile metadata | Secured 🔒 |
 
-### Music Service
+### Music Service (`/api/music`)
 | Method | Endpoint | Purpose | Protection Level |
 |--------|---------|---------|------------------|
-| `GET` | `/api/music/get` | Retrieve global tracks | Public |
-| `POST` | `/api/music/create` | Upload new mp3 & cover (`multipart/form-data`) | Artist Only 🎸 |
-| `POST` | `/api/music/playlist/create` | Save track collection | Secured 🔒 |
-
-> **Response Example (`GET /api/music/health`):**
-```json
-{
-  "status": "OK",
-  "service": "music",
-  "timestamp": "2026-03-20T10:30:00Z"
-}
-```
+| `GET` | `/get` | Retrieve global music tracks | Public 🌍 |
+| `POST` | `/create` | Upload new mp3 & cover (`multipart/form-data`) | Artist Only 🎸 |
+| `POST` | `/playlist/create` | Save track collection | Secured 🔒 |
 
 ---
 
@@ -193,34 +213,50 @@ aura-music-player/
 
 ### Prerequisites
 - Node.js `v18+`
-- Docker Desktop
-- RabbitMQ & Redis (or let Docker Compose handle them)
-- AWS Account (for S3 bucket keys)
+- Docker & Docker Compose
+- AWS Account (Access Keys for S3 bucket)
 
-### 1. Local Development (Docker Compose) - *Recommended*
-1. Clone the repository.
-2. Add `.env` inside `auth/`, `music/`, and `notification/` (Use `EMAIL_USER` & generic configs).
-3. Run the orchestration command:
-```bash
-docker-compose up --build -d
-```
-4. Access the web app at **`http://localhost:5173`** and RabbitMQ management at **`http://localhost:15672`**.
+### Local Development (Docker Compose) - *Recommended*
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/DevanshuTiwaskar/Micro-service-Project.git
+   cd Micro-service-Project
+   ```
+2. **Environment Variables:**
+   Create `.env` files in `auth/`, `music/`, and `notification/` configuring your DB, AWS, and Email credentials.
+
+3. **Spin up the stack:**
+   ```bash
+   docker-compose up --build -d
+   ```
+4. **Access the application:**
+   - Web App: `http://localhost:5173`
+   - RabbitMQ Management: `http://localhost:15672`
+   - API Gateway: `http://localhost:80`
 
 ---
 
 ## ☸️ Kubernetes & DevOps
-Aura Music is fully configured for a local `Minikube` cluster, paving the way for AWS EKS or GCP GKE production deployments.
 
-- **Deployments:** Ensure Zero-Downtime rollouts. Each microservice scales independently via its ReplicaSet.
-- **Services:** Internal `ClusterIP` networks strictly isolate database access (Mongo, Redis) away from the public eye.
-- **Ingress/API Gateway:** Bound by a `NodePort` or `LoadBalancer` (via Nginx) directing inbound traffic safely.
+Aura Music is fully configured for a local `Minikube` K8s cluster, paving the way for seamless transitions to AWS EKS or GCP GKE production deployments.
 
-**Run in K8s:**
+- **Deployments:** Ensure zero-downtime rollouts. Each microservice scales independently via its ReplicaSet.
+- **Networking:** Internal `ClusterIP` networks strictly isolate databases (Mongo, Redis) from public access.
+- **Ingress:** Bound by a `NodePort` or `LoadBalancer` via Nginx, routing inbound traffic cleanly to services.
+
+**Running K8s Locally:**
 ```bash
 minikube start
 eval $(minikube docker-env)
-# Build local images
+
+# Build local K8s-ready images
 docker build -t frontend:latest ./Frontend
+docker build -t auth-service:latest ./auth
+docker build -t music-service:latest ./music
+docker build -t notification-service:latest ./notification
+docker build -t api-gateway:latest ./api-gateway
+
+# Apply configurations
 kubectl apply -f k8s/
 kubectl get pods -w
 ```
@@ -228,27 +264,19 @@ kubectl get pods -w
 ---
 
 ## 📊 Performance & Scalability
-- **Horizontal Scaling:** Because states (like JWTs) are externalized to Redis or kept inside the token payload, we can safely clone `music` or `auth` pods unconditionally.
-- **Offloading Work:** Time-intensive integrations (AWS S3 chunk streams, SMTP email transmission) do not lock the Node.js Main Thread.
-
----
-
-## 🧪 Testing Strategy
-- **Unit Testing:** Recommended to leverage `Jest` for individual controller mock verifications.
-- **Integration Testing:** Uses Postman collections covering cross-service logic (e.g. User registers -> Verify RabbitMQ queue captures payload).
-- **Chaos Testing:** Manually killing the Redis container confirms the Auth fallback behaviors logic.
+- **Horizontal Scaling:** Because connection states (like JWTs) are externalized to Redis or kept client-side, we can horizontally scale `music` or `auth` pods on demand without encountering sticky-session issues.
+- **Offloading Work:** Time-intensive external integrations (AWS S3 byte streaming, SMTP email transmission) do not block the Node.js Main Event Loop, maintaining ultra-fast API throughput.
 
 ---
 
 ## 🔥 Future Improvements
-- [ ] **CI/CD Pipeline:** GitHub actions to automatically run linting and push Docker images to DockerHub.
-- [ ] **Grafana / Prometheus:** Centralized tracing and internal metrics.
-- [ ] **Rate Limiting:** Protect APIs against abuse using `express-rate-limit` inside API Gateway.
-- [ ] **ElasticSearch Integration:** Upgrading our standard MongoDB Music search to a high-speed fuzzy query engine.
+- [ ] **CI/CD Pipeline:** Implement GitHub Actions to automate linting, K8s manifest validation, and DockerHub image pushes.
+- [ ] **Observability:** Integrate **Grafana & Prometheus** for centralized tracing, crash reporting, and K8s internal metrics.
+- [ ] **Rate Limiting:** Protect APIs against brute-force abuse using `express-rate-limit` inside the Gateway layer.
+- [ ] **ElasticSearch Integration:** Upgrade the standard MongoDB search to a high-speed fuzzy query engine for instantaneous track lookup.
 
 ---
 
-### 💼 Open Source / Contributions
-Have an idea? We welcome Pull Requests! Create a fork, commit your feature, and submit a PR for review.
-
-> *Built with ❤️ focusing on exceptional engineering.*
+<div align="center">
+  <i>Built with ❤️ focusing on exceptional engineering.</i>
+</div>
