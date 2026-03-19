@@ -13,6 +13,7 @@ import Redis from "ioredis";
 const redis = new Redis({
   host: process.env.REDIS_HOST,
   port: process.env.REDIS_PORT,
+  password: process.env.REDIS_PASSWORD,
   maxRetriesPerRequest: 1,
   enableOfflineQueue: false,
 });
@@ -384,7 +385,11 @@ export const logoutUser = async (req, res) => {
     const decoded = jwt.decode(token);
     const expiresAt = decoded.exp - Math.floor(Date.now() / 1000);
 
-    await redis.set(`bl_${token}`, token, "EX", expiresAt);
+    // Only blacklist token in Redis if Redis is available
+    if (redisReady) {
+      await redis.set(`bl_${token}`, token, "EX", expiresAt);
+    }
+
     const isProduction = process.env.NODE_ENV === "production";
     res.clearCookie("token", {
       httpOnly: true,

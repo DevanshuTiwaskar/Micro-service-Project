@@ -32,13 +32,21 @@ app.use(
 );
 
 const allowedOrigins = [
-  config.FRONTEND_URL,
   "https://aura-frontend-omq4.onrender.com",
   "http://localhost:5173",
+  "http://localhost:3000",
+  config.FRONTEND_URL,
 ].filter(Boolean);
 
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    // Allow requests with no origin (mobile apps, curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS blocked: ${origin}`));
+  },
   credentials: true,
 }));
 // Configure Passport to use Google OAuth 2.0 strategy
