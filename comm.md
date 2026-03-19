@@ -1,7 +1,4 @@
-Perfect — here is a **clean, practical list of IMPORTANT COMMANDS** you used (and should remember) during this whole Docker + microservices setup.
-You can **copy-paste this into your README or PROJECT_STATUS.md**.
 
----
 
 ## 🐳 Docker – Core Commands
 
@@ -247,16 +244,7 @@ docker-compose restart
 | RabbitMQ UI  | 15672 |
 | Redis        | 6379  |
 
----
 
-If you want next, I can:
-
-* Create **README.md (final version)**
-* Give **next-step command list (API Gateway)**
-* Prepare **production Docker tips**
-* Create **.env.example for all services**
-
-Just tell me 👍
 
 minikube status
 minikube start 
@@ -327,10 +315,27 @@ minikube service api-gateway --url
 
 
 
+# Auth Service
+cd "C:\Users\Asus\Desktop\korder\music player\auth"
+docker build -t devanshu820/aura-auth:latest .
+docker push devanshu820/aura-auth:latest
+
+# 2. Notification Service
+cd "C:\Users\Asus\Desktop\korder\music player\notification"
+docker build -t devanshu820/aura-notification:latest .
+docker push devanshu820/aura-notification:latest
 
 
+# 3. Music Service
 
+cd "C:\Users\Asus\Desktop\korder\music player\music"
+docker build -t devanshu820/aura-music:latest .
+docker push devanshu820/aura-music:latest
 
+# 4. Frontend
+cd "C:\Users\Asus\Desktop\korder\music player\Frontend"
+docker build -t devanshu820/aura-frontend:latest .
+docker push devanshu820/aura-frontend:latest
 
 
 https://aura-music-v56h.onrender.com
