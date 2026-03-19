@@ -1,7 +1,20 @@
 <div align="center">
   <img src="./Frontend/public/favicon.svg" alt="Aura Music Player Logo" width="150" height="auto" />
   <h1>🎵 Aura Music Player</h1>
-  <p><em>A highly scalable, event-driven Microservices Music Player Web Application.</em></p>
+  
+  <!-- Animated Typing Text -->
+  <a href="https://aura-frontend-omq4.onrender.com">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=20&duration=4000&pause=1000&color=00D8FF&center=true&vCenter=true&width=800&lines=A+highly+scalable,+event-driven+Music+Player.;Built+with+Microservices+Architecture.;Powered+by+React,+Node.js,+and+RabbitMQ.;Deployed+with+Docker+and+Kubernetes." alt="Typing SVG" />
+  </a>
+
+  <br />
+
+  <!-- Live Demo Button -->
+  <a href="https://aura-frontend-omq4.onrender.com">
+    <img src="https://img.shields.io/badge/🎯_Live_Demo_Available-Launch_App-00D8FF?style=for-the-badge&logoColor=white" alt="Live Demo" />
+  </a>
+
+  <br /><br />
 
   <!-- Badges -->
   <p>
