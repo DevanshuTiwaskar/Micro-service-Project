@@ -2,14 +2,14 @@
 import React, { useState, useEffect, useRef } from "react";
 
 /**
- * ServerWakeUp
- * -----------
- * On Render's free tier the backend sleeps after inactivity.
- * This component fires a lightweight ping on mount and shows a
- * beautiful fullscreen overlay until the server responds.
+ * ServerWakeUp — NON-BLOCKING banner
+ * -----------------------------------
+ * Shows a slim, animated banner at the top of the page while the
+ * Render free-tier backends are cold-starting.  The app always
+ * renders underneath — nothing is ever blocked or hidden.
  *
- * Once the server is awake (or the request completes) the overlay
- * fades out and the children (the whole app) are revealed.
+ * The banner auto-dismisses once any backend responds, or after
+ * a maximum timeout (90 s).
  */
 
 const PING_URLS = [
@@ -17,210 +17,173 @@ const PING_URLS = [
   import.meta.env.VITE_MUSIC_BASE_URL,
 ].filter(Boolean);
 
-// If no backend URLs configured, skip entirely
 const SHOULD_PING = PING_URLS.length > 0;
+const MAX_WAIT = 90; // seconds
 
 export default function ServerWakeUp({ children }) {
-  const [serverReady, setServerReady] = useState(!SHOULD_PING);
-  const [fadeOut, setFadeOut] = useState(false);
+  const [visible, setVisible] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const [dots, setDots] = useState("");
   const [elapsed, setElapsed] = useState(0);
-  const startTime = useRef(Date.now());
+  const startRef = useRef(Date.now());
+  const timerRef = useRef(null);
 
-  // Animate the dots: . → .. → ... → .
+  // Animate dots
   useEffect(() => {
-    if (serverReady) return;
+    if (!visible || dismissed) return;
     const id = setInterval(() => {
-      setDots((prev) => (prev.length >= 3 ? "" : prev + "."));
+      setDots((p) => (p.length >= 3 ? "" : p + "."));
     }, 500);
     return () => clearInterval(id);
-  }, [serverReady]);
+  }, [visible, dismissed]);
 
-  // Elapsed second counter
+  // Elapsed counter
   useEffect(() => {
-    if (serverReady) return;
-    const id = setInterval(() => {
-      setElapsed(Math.floor((Date.now() - startTime.current) / 1000));
+    if (!visible || dismissed) return;
+    timerRef.current = setInterval(() => {
+      const s = Math.floor((Date.now() - startRef.current) / 1000);
+      setElapsed(s);
+      if (s >= MAX_WAIT) dismiss();
     }, 1000);
-    return () => clearInterval(id);
-  }, [serverReady]);
+    return () => clearInterval(timerRef.current);
+  }, [visible, dismissed]);
 
-  // Ping the backends
+  const dismiss = () => {
+    setDismissed(true);
+    clearInterval(timerRef.current);
+  };
+
+  // Ping backends
   useEffect(() => {
     if (!SHOULD_PING) return;
 
     let cancelled = false;
 
     const ping = async () => {
+      // Show banner only if server takes more than 3s
+      const showTimeout = setTimeout(() => {
+        if (!cancelled) setVisible(true);
+      }, 3000);
+
       try {
-        // Fire all pings in parallel – we only need ALL to respond
         await Promise.all(
           PING_URLS.map((url) =>
-            fetch(url, { mode: "cors", credentials: "include" }).catch(() => {
-              // Even a CORS error / 401 means the server IS awake
-              return "awake";
-            })
+            fetch(url, { mode: "cors", credentials: "include" })
+              .then(() => "ok")
+              .catch(() => "ok") // CORS error / network error still means server IS awake
           )
         );
       } catch {
-        // network-level failure, servers are still waking
+        // ignore
       }
-      if (!cancelled) {
-        // Smooth exit: fade-out then unmount
-        setFadeOut(true);
-        setTimeout(() => setServerReady(true), 700);
-      }
+
+      clearTimeout(showTimeout);
+      if (!cancelled) dismiss();
     };
 
     ping();
-
-    return () => {
-      cancelled = true;
-    };
+    return () => { cancelled = true; };
   }, []);
 
-  // If no ping needed or server is ready, just render children
-  if (serverReady) return <>{children}</>;
-
-  // Show overlay while waiting
   return (
     <>
-      {/* Overlay */}
-      <div
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: 9999,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "#020202",
-          transition: "opacity 0.7s ease",
-          opacity: fadeOut ? 0 : 1,
-          pointerEvents: fadeOut ? "none" : "auto",
-        }}
-      >
-        {/* Ambient glow orbs */}
+      {/* Banner — only shows if server is slow (>3s) */}
+      {visible && !dismissed && (
         <div
           style={{
-            position: "absolute",
-            top: "20%",
-            left: "30%",
-            width: 400,
-            height: 400,
-            borderRadius: "50%",
-            background: "rgba(46,224,122,0.06)",
-            filter: "blur(120px)",
-            animation: "wakeUpPulse 3s ease-in-out infinite",
-          }}
-        />
-        <div
-          style={{
-            position: "absolute",
-            bottom: "20%",
-            right: "25%",
-            width: 350,
-            height: 350,
-            borderRadius: "50%",
-            background: "rgba(75,111,245,0.06)",
-            filter: "blur(120px)",
-            animation: "wakeUpPulse 3s ease-in-out infinite 1.5s",
-          }}
-        />
-
-        {/* Spinning ring */}
-        <div
-          style={{
-            width: 72,
-            height: 72,
-            borderRadius: "50%",
-            border: "3px solid rgba(255,255,255,0.05)",
-            borderTopColor: "#2EE07A",
-            animation: "wakeUpSpin 1s linear infinite",
-            marginBottom: 32,
-          }}
-        />
-
-        {/* Brand */}
-        <h1
-          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            zIndex: 9999,
+            background: "linear-gradient(135deg, rgba(46,224,122,0.12), rgba(75,111,245,0.12))",
+            backdropFilter: "blur(16px)",
+            WebkitBackdropFilter: "blur(16px)",
+            borderBottom: "1px solid rgba(255,255,255,0.08)",
+            padding: "12px 20px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 12,
             fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
-            fontSize: "2rem",
-            fontWeight: 900,
-            background: "linear-gradient(135deg, #2EE07A, #4B6FF5, #9b59ff)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            marginBottom: 16,
-            letterSpacing: "-0.02em",
+            animation: "slideDown 0.4s ease-out",
           }}
         >
-          AURA
-        </h1>
-
-        {/* Status text */}
-        <p
-          style={{
-            fontFamily: "'Inter', system-ui, sans-serif",
-            fontSize: "0.95rem",
-            color: "rgba(255,255,255,0.5)",
-            fontWeight: 500,
-            marginBottom: 8,
-            minWidth: 260,
-            textAlign: "center",
-          }}
-        >
-          Waking up the servers{dots}
-        </p>
-
-        {/* Sub-text explanation */}
-        <p
-          style={{
-            fontFamily: "'Inter', system-ui, sans-serif",
-            fontSize: "0.75rem",
-            color: "rgba(255,255,255,0.25)",
-            fontWeight: 400,
-            maxWidth: 340,
-            textAlign: "center",
-            lineHeight: 1.6,
-            marginBottom: 20,
-          }}
-        >
-          Our servers spin down after inactivity to save resources.
-          The first request may take <strong style={{ color: "rgba(255,255,255,0.4)" }}>30–60 seconds</strong> to respond.
-        </p>
-
-        {/* Elapsed timer */}
-        {elapsed > 0 && (
+          {/* Spinner */}
           <div
             style={{
-              fontFamily: "'Inter', monospace, sans-serif",
-              fontSize: "0.7rem",
-              color: "rgba(255,255,255,0.15)",
-              fontWeight: 600,
-              letterSpacing: "0.1em",
-              textTransform: "uppercase",
+              width: 18,
+              height: 18,
+              borderRadius: "50%",
+              border: "2px solid rgba(255,255,255,0.1)",
+              borderTopColor: "#2EE07A",
+              animation: "wakeUpSpin 0.8s linear infinite",
+              flexShrink: 0,
+            }}
+          />
+
+          {/* Message */}
+          <span
+            style={{
+              fontSize: "0.82rem",
+              color: "rgba(255,255,255,0.7)",
+              fontWeight: 500,
             }}
           >
-            {elapsed}s elapsed
-          </div>
-        )}
+            Server is waking up{dots}
+            <span style={{ color: "rgba(255,255,255,0.35)", marginLeft: 6, fontSize: "0.75rem" }}>
+              Free tier servers may take 30–60s to start
+            </span>
+          </span>
 
-        {/* Inline keyframes */}
-        <style>{`
-          @keyframes wakeUpSpin {
-            to { transform: rotate(360deg); }
-          }
-          @keyframes wakeUpPulse {
-            0%, 100% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); }
-          }
-        `}</style>
-      </div>
+          {/* Timer */}
+          {elapsed > 0 && (
+            <span
+              style={{
+                fontSize: "0.7rem",
+                color: "rgba(255,255,255,0.25)",
+                fontWeight: 600,
+                fontFamily: "monospace",
+                flexShrink: 0,
+              }}
+            >
+              {elapsed}s
+            </span>
+          )}
 
-      {/* Render children behind the overlay so they can start loading */}
-      <div style={{ visibility: "hidden" }}>{children}</div>
+          {/* Close button */}
+          <button
+            onClick={dismiss}
+            style={{
+              background: "none",
+              border: "none",
+              color: "rgba(255,255,255,0.3)",
+              cursor: "pointer",
+              fontSize: "1.1rem",
+              padding: "0 4px",
+              marginLeft: 4,
+              lineHeight: 1,
+              flexShrink: 0,
+            }}
+            aria-label="Dismiss"
+          >
+            ✕
+          </button>
+
+          <style>{`
+            @keyframes wakeUpSpin {
+              to { transform: rotate(360deg); }
+            }
+            @keyframes slideDown {
+              from { transform: translateY(-100%); opacity: 0; }
+              to { transform: translateY(0); opacity: 1; }
+            }
+          `}</style>
+        </div>
+      )}
+
+      {/* App always renders — never blocked */}
+      {children}
     </>
   );
 }
