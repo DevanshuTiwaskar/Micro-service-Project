@@ -80,7 +80,7 @@ export default function ServerWakeUp({ children }) {
   }, []);
 
   // If no ping needed or server is ready, just render children
-  if (serverReady && !fadeOut) return <>{children}</>;
+  if (serverReady) return <>{children}</>;
 
   // Show overlay while waiting
   return (
