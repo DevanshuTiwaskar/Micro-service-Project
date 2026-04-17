@@ -1,0 +1,143 @@
+{
+  "nodes": [
+    {
+      "id": "architecture_overview",
+      "label": "Architecture Overview",
+      "file_type": "document",
+      "source_file": "comm.md"
+    },
+    {
+      "id": "event_driven_architecture",
+      "label": "Event-Driven Microservices Architecture",
+      "file_type": "document",
+      "source_file": "comm.md"
+    },
+    {
+      "id": "rabbitmq_broker",
+      "label": "RabbitMQ Broker",
+      "file_type": "document",
+      "source_file": "readMeRabbitMQ.md"
+    },
+    {
+      "id": "user_registration_event",
+      "label": "USER.REGISTERED Event",
+      "file_type": "document",
+      "source_file": "comm.md"
+    },
+    {
+      "id": "otp_email_event",
+      "label": "FORGOT_PASSWORD_OTP Event",
+      "file_type": "document",
+      "source_file": "comm.md"
+    },
+    {
+      "id": "aws_s3_storage",
+      "label": "AWS S3 Cloud Storage",
+      "file_type": "document",
+      "source_file": "README.md"
+    },
+    {
+      "id": "kubernetes_deployment",
+      "label": "Kubernetes Orchestration",
+      "file_type": "document",
+      "source_file": "README.md"
+    },
+    {
+      "id": "nginx_api_gateway",
+      "label": "Nginx API Gateway",
+      "file_type": "document",
+      "source_file": "README.md"
+    },
+    {
+      "id": "brand_identity",
+      "label": "Aura brand favicon",
+      "file_type": "image",
+      "source_file": "Frontend/public/favicon.svg"
+    },
+    {
+      "id": "project_status",
+      "label": "Aura Project Health Status",
+      "file_type": "document",
+      "source_file": "Untitled-1.md"
+    }
+  ],
+  "edges": [
+    {
+      "source": "event_driven_architecture",
+      "target": "rabbitmq_broker",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "comm.md"
+    },
+    {
+      "source": "rabbitmq_broker",
+      "target": "user_registration_event",
+      "relation": "transmits",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "comm.md"
+    },
+    {
+      "source": "rabbitmq_broker",
+      "target": "otp_email_event",
+      "relation": "transmits",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "comm.md"
+    },
+    {
+      "source": "nginx_api_gateway",
+      "target": "architecture_overview",
+      "relation": "implements",
+      "confidence": "INFERRED",
+      "confidence_score": 0.9,
+      "source_file": "README.md"
+    },
+    {
+      "source": "aws_s3_storage",
+      "target": "music_service",
+      "relation": "shares_data_with",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "README.md"
+    },
+    {
+      "source": "brand_identity",
+      "target": "frontend",
+      "relation": "represents",
+      "confidence": "INFERRED",
+      "confidence_score": 0.95,
+      "source_file": "Frontend/public/favicon.svg"
+    },
+    {
+      "source": "project_status",
+      "target": "architecture_overview",
+      "relation": "references",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "Untitled-1.md"
+    },
+    {
+      "source": "kubernetes_deployment",
+      "target": "architecture_overview",
+      "relation": "orchestrates",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "source_file": "README.md"
+    }
+  ],
+  "hyperedges": [
+    {
+      "id": "core_messaging_infrastructure",
+      "label": "Core Messaging System",
+      "nodes": ["rabbitmq_broker", "user_registration_event", "otp_email_event", "notification_service"],
+      "relation": "implement",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "comm.md"
+    }
+  ],
+  "input_tokens": 0,
+  "output_tokens": 0
+}

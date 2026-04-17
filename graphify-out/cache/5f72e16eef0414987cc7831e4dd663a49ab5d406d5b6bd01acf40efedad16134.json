@@ -1,0 +1,1 @@
+{"nodes": [{"id": "auth_src_config_config_js", "label": "config.js", "file_type": "code", "source_file": "auth\\src\\config\\config.js", "source_location": "L1"}], "edges": [{"source": "auth_src_config_config_js", "target": "dotenv", "relation": "imports_from", "confidence": "EXTRACTED", "source_file": "auth\\src\\config\\config.js", "source_location": "L1", "weight": 1.0}]}
